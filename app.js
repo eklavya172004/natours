@@ -12,12 +12,19 @@ const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
+const path = require('path');
 
 const app = express();
+
+app.set('view engine','pug');
+app.set('views',path.join(__dirname,'views'));
 
 // 1.GLOBAL MIDDLE WARES
 
 //Set Securtiy http headers
+app.use(express.static(path.join(__dirname, 'public')));
+
+//set secure http headers
 app.use(helmet());
 // console.log(process.env.NODE_ENV);
 
@@ -55,7 +62,7 @@ app.use(hpp({
 }));
 
 //serving static files
-app.use(express.static(`${__dirname}/public`))
+// app.use(express.static(`${__dirname}/public`))
 
 //test middleware
 app.use((req,res,next) => {
@@ -79,6 +86,9 @@ app.use((req,res,next) => {
 // app.delete('/api/v1/tours/:id',deleteTour);
 
 // 3. Routes
+app.get('/',(req, res) => {
+    res.status(200).render('base');
+})
 
 app.use('/api/v1/tours',tourRoutes);
 app.use('/api/v1/user',userRouter);

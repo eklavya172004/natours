@@ -2,6 +2,7 @@ const AppError = require('../utils/appError');
 const User = require('./../model/userModel');
 // const APIfeatures = require('./../utils/apiFeatures');
 const catchAsync = require('./../utils/catchAsync');
+const factory = require('./handlerController');
 
 const filterObj = (obj , ...allowedfields) => {
 
@@ -74,16 +75,9 @@ exports.getAllUsersId = (req,res) => {
     })
 }
 
-exports.deleteUser = (req,res) => {
-    res.status(500).json({
-        status:'error',
-        message:'Something went wrong'
-    })
-}
 
-exports.patch1 = (req,res) => {
-    res.status(500).json({
-        status:'error',
-        message:'Something went wrong'
-    })
-}
+//Do not update password with this!!
+
+exports.deleteUser = factory.deleteOne(User);
+
+exports.patch1 = factory.updateOne(User);
